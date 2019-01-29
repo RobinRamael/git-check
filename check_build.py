@@ -123,6 +123,8 @@ def main(commit_ref=None, jenkins_url=None, jobs=None, verbose=0, trace=False):
                 click.echo(test)
                 if trace:
                     click.echo(result.errorStackTrace)
+
+        if not build.running:
             break
 
 
