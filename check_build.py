@@ -70,6 +70,17 @@ class Build(object):
             return "failed"
 
     @property
+    def status_color(self):
+        if self.running:
+            return 'blue'
+
+        if self.succeeded:
+            return 'green'
+
+        if self.failed:
+            return 'red'
+
+    @property
     def id(self):
         return self.build.buildno
 
@@ -105,7 +116,7 @@ def main(commit_ref=None, jenkins_url=None, jobs=None, verbose=0, trace=False):
         click.echo("Connected to jenkins on {}".format(jenkins_url), err=True)
 
     for build in jenkins.get_builds(full_sha):
-        click.echo(click.style(str(build), fg='red'), err=True)
+        click.echo(click.style(str(build), fg=build.status_color), err=True)
 
         if build.failed:
             for test, result in build.get_failed_tests():
